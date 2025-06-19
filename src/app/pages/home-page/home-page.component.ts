@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { afterNextRender, afterRender, Component, effect } from '@angular/core';
 
 const log = (...messages: string[])=>{
   console.log(
@@ -16,6 +16,16 @@ export class HomePageComponent {
   constructor(){
     console.log('constructor llamado');
   }
+
+  basicEffect = effect((onCleanup)=>{
+    log('effect','disparar efectos secundarios');
+
+    onCleanup(()=>{
+      log('onCleanup','se ejecuta cuando el efecto se va a destruir');
+    });
+
+  });
+
   ngOnInit(){
     log("ngOnInit","Runs once after Angular has initialized all the component's inputs.");
   }
@@ -37,4 +47,14 @@ export class HomePageComponent {
   ngAfterViewChecked(){
     log("ngAfterViewChecked","Runs every time the component's view has been checked for changes.");
   }
+  ngOnDestroy(){
+    log("ngOnDestroy","Runs once before the component is destroyed.")
+  }
+  afterNextRenderEffect = afterNextRender(()=>{
+    log("afterNextRender","Runs once the next time that all components have been rendered to the DOM.");
+  });
+
+  afterRenderEffect = afterRender(()=>{
+    log("afterRender","Runs every time all components have been rendered to the DOM.");
+  });
 }
