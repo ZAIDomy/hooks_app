@@ -1,4 +1,4 @@
-import { afterNextRender, afterRender, Component, effect } from '@angular/core';
+import { afterNextRender, afterRender, Component, effect, signal } from '@angular/core';
 
 const log = (...messages: string[])=>{
   console.log(
@@ -13,8 +13,24 @@ const log = (...messages: string[])=>{
   templateUrl: './home-page.component.html',
 })
 export class HomePageComponent {
+  
+  traditionalProperty='Omar';
+  signalProperty=signal('Omar');
+
   constructor(){
     console.log('constructor llamado');
+
+    setTimeout(() => {
+      this.signalProperty.set('Alejandro Diaz');
+    }, 2000);
+  }
+
+  changeTraditional(){
+    this.traditionalProperty="Alex Diaz";
+  }
+
+  changeSignal(){
+    this.signalProperty.set("Alex Diaz");
   }
 
   basicEffect = effect((onCleanup)=>{
